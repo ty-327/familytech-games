@@ -1,0 +1,63 @@
+.square {
+  background: #fff;
+  border: 1px solid;
+  float: left;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 28px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 28px;
+  text-transform: capitalize;
+  
+}
+
+.number {
+  position: absolute;
+  bottom: 4px; 
+  left: 2px;
+  font-size: .7em;
+}
+
+.div
+{
+    display : flex;
+    position: relative;
+}
+
+.clue{
+  border: 1px solid rgb(0, 0, 0);
+  float: left;
+  font-size: 24px;
+  text-align: center;
+}
+
+.container{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.modal_container {
+  position: fixed;
+  z-index: 2;
+  text-align: center;
+  background-color: #f6daf7;
+  background-color: #ffc7c7;
+  width: 50%;
+  height: fit-content;
+  top: 20%;
+  left: 50%;
+  margin-left: -25%; /* Negative half of width. */
+  border-radius: 5px;
+}
+
+.close_btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  padding: 10px;
+}

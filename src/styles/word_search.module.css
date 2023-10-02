@@ -1,0 +1,52 @@
+.ws_container {
+    display: flex;
+    justify-content: center;
+  
+    /* flex-direction: column;
+    align-content: center; */
+  }
+  
+.ws_board {
+    margin: 1% 30%;
+    padding: 5px;
+    border: 1px solid;
+}
+  
+.ws_names_container {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 60%;
+    height: 100px;
+    max-width: 400px;
+    border: 1px solid;
+}
+  
+.ws_cell {
+    background-color: white;
+    border: none;
+    font-size: large;
+    width: 25px;
+    height: 25px;
+}
+
+.ws_name {
+    background-color: white;
+    border: none;
+    font-size: medium;
+    height: 40px;
+}
+
+.modal_container {
+    position: fixed;
+    z-index: 2;
+    text-align: center;
+    background-color: #ffffff;
+    width: 50%;
+    height: fit-content;
+    top: 20%;
+    left: 50%;
+    margin-left: -25%; /* Negative half of width. */
+    border-radius: 5px;
+  }

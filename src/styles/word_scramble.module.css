@@ -1,0 +1,164 @@
+#answer {
+  color: red;
+  text-align: left;
+  font-size: 1.4em;
+}
+
+.close_btn {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  padding: 10px;
+}
+
+.header {
+  text-align: center;
+}
+
+.input_form {
+  flex: 1;
+  align-self: center;
+  margin: 0 auto;
+  padding-left: 0.5rem;
+  align-items: center;
+}
+
+.input_field {
+  font-size: 1.4em;
+  border-radius: 5px;
+  font-family: "Electrolize", cursive;
+}
+
+.scrambled_name {
+  flex: 1;
+  font-size: 1.4em;
+  text-align: right;
+  align-self: center;
+  padding-right: 0.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.scrambled_name_container {
+  display: flex;
+  margin-top: 1em;
+  align-items: center;
+}
+
+.modal {
+  background-color: red;
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+}
+
+.modal_container {
+  position: fixed;
+  z-index: 2;
+  text-align: center;
+  background-color: #ffc7c7;
+  width: 50%;
+  height: fit-content;
+  top: 20%;
+  left: 50%;
+  margin-left: -25%; /* Negative half of width. */
+  border-radius: 5px;
+}
+
+.container {
+  padding: 1.5em;
+  /* background-image: url("../wordscramble.png"); */
+}
+
+.inner_container {
+  padding: 2em;
+  margin: 0 auto;
+  background-color: white;
+  width: 85%;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+}
+
+.show_answer_btn {
+  display: block;
+  margin: 1em auto 0 auto;
+  padding: 1em;
+  border-radius: 5px;
+  background-color: #c1f8ee;
+}
+
+.show_answer_btn:active {
+  background-color: #ffc7c7;
+}
+
+.info_icon {
+  position: relative;
+  left: 5px;
+  top: 5px;
+}
+.info_icon:active {
+  color: #c1f8ee;
+}
+
+.person_image {
+  align-self: center;
+}
+
+#show_answer_btn {
+  align-self: center;
+  margin-left: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+@media only screen and (max-width: 700px) {
+  #answer {
+    text-align: center;
+  }
+  .container {
+    padding: 1em;
+  }
+  .input_field {
+    font-size: 1em;
+  }
+  .scrambled_name {
+    flex: 1;
+    /* font-size: 1em; */
+    text-align: center;
+    align-self: center;
+    padding-right: 0.5rem;
+    font-weight: bold;
+  }
+  .scrambled_name_container {
+    flex-direction: column;
+  }
+
+  .modal_container {
+    width: 76%;
+    margin-left: -38%; /* Negative half of width. */
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .container {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+  }
+  .input_field {
+    font-size: 1em;
+    width: 80%;
+  }
+  .scrambled_name {
+    font-size: 1em;
+  }
+
+  .modal_container {
+    width: 86%;
+    margin-left: -43%; /* Negative half of width. */
+  }
+  #show_answer_btn {
+    align-self: center;
+    margin-top: 0.25em;
+    margin-left: 0.35em;
+    margin-bottom: 0.35em;
+  }
+}

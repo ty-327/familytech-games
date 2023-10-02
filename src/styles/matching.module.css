@@ -1,0 +1,81 @@
+.main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  align-content: center;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 200px;
+  border: 3px;
+  border-color: black;
+  border-style: solid;
+  border-radius: 5px;
+  background-color: #7CC6FE;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  font-size: 36px;
+  font-weight: bold;
+  user-select: none;
+}
+
+.roomSetup {
+  display: flex;
+  justify-content: center;
+}
+
+.modal_container {
+  position: fixed;
+  z-index: 2;
+  text-align: center;
+  background-color: #f6daf7;
+  background-color: #ffc7c7;
+  width: 50%;
+  height: fit-content;
+  top: 20%;
+  left: 50%;
+  margin-left: -25%; 
+  border:black 2px solid;
+  border-radius: 500px;
+} 
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(6, 200px);
+  grid-gap: 8px;
+  justify-content: center;
+  align-content: center;
+  height: fit-content;
+  width: fit-content;
+  padding: 20px;
+  background-color: #7DB86B;
+  border-radius: 5px;
+  border: 3px black solid;
+}
+
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu p {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.active {
+  transform: rotateY(180deg);
+}
+
+.matched {
+  background-color: lightgoldenrodyellow;
+  color: white;
+}

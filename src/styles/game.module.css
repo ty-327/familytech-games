@@ -1,0 +1,134 @@
+.column_container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* The container wrapping the game title and picture */
+.game_container, .in_dev_game_container, .game_container_hover, .in_dev_game_container_hover {
+  border-radius: 10px;
+  display: inherit;
+  width: 250px;
+  height: 350px;
+
+  perspective: 1000px; /* For card animation */
+}
+
+.game_container, .game_container_hover {
+  cursor: pointer; /* For the mouse */
+}
+
+
+.title_box {
+  border-top: 1px solid rgb(170, 168, 168);
+  font-size: 1.5em;
+  text-align: center;
+  width: 100%; /* So the border top goes across the whole picture */
+  height: fit-content;
+  background-color: var(--white);
+}
+
+.title {
+  padding-top: 15px; /* subject to change */
+  padding-bottom: 15px;
+  margin: 0px;
+  color: var(--blue);
+}
+
+
+/* 
+  Using overflow:hidden hides the card from flipping on the edges, 
+  so must put the curved boundaries on the inner classes instead of game_container    
+*/
+.image, .in_dev_image, .flip_card_inner, .flip_card_front, .flip_card_back {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  backface-visibility: hidden;
+}
+
+.flip_card_inner, .flip_card_front, .flip_card_back {
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+
+
+/* For Card Flipping Animation */
+.flip_card_inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 1.4s; /* The time it takes the card to flip, chosen arbitrarily */
+  transform-style: preserve-3d;
+
+  box-shadow: 5px 5px 20px rgb(0, 0, 0, 35%); /* So shadow moves with card*/
+}
+
+
+.game_container:hover .flip_card_inner {
+  transform: rotateY(-180deg);
+}
+
+.in_dev_game_container:hover .flip_card_inner {
+  transform: rotateY(-180deg);
+}
+
+.game_container_hover .flip_card_inner {
+  transform: rotateY(-180deg);
+}
+
+.in_dev_game_container_hover .flip_card_inner {
+  transform: rotateY(-180deg);
+}
+
+
+.flip_card_front, .flip_card_back {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+.flip_card_back {
+  transform: rotateY(180deg);
+}
+
+
+.flip_card_front {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+
+/* For games that are in development */
+.in_dev_image {
+    filter: grayscale(0.9);
+    opacity: 0.9;
+}
+
+.in_dev_sign {
+  z-index: 2;
+  transform: rotate(45deg);
+  position: absolute;
+  color: var(--blue);
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 200%;
+  text-align: center;
+
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 125px; /* To move the sign's rotation point halfway down the image */
+}
+
+
+
+
+
+/* Todo: could probably use some cleanup */
+

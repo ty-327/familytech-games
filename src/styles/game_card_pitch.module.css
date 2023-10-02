@@ -1,0 +1,41 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    text-align: center;
+    font-size: 1.2rem;
+
+    min-height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+
+    color: var(--black);
+
+    /* top, right, bottom, left */
+    padding: 5px 15px 5px 15px;
+    
+
+    /* Hide scrollbar */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.title {
+    text-align: center;
+    width: 60%;
+    padding-bottom: 5px;
+    border-bottom: 1px solid gray;
+    color: var(--blue);
+}
+
+/* todo: add grey into global colors? */
+

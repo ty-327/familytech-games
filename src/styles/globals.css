@@ -1,0 +1,27 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Electrolize', cursive;
+  background-color: var(--background);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #2a3492;
+  --red: #ef4423;
+  --orange: #ff9526;
+  --yellow: #f6eb14;
+  --green: #4faf44;
+  --white: #fff;
+  --black: #000;
+  --background: white;
+}

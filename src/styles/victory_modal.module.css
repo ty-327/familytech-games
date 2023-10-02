@@ -1,0 +1,15 @@
+.message_container {
+  width: 50%;
+  margin: 0 auto;
+
+  margin-top: 12%;
+  padding: 4rem;
+  background-color: white;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 700px) {
+  .message_container {
+    width: 90%;
+  }
+}

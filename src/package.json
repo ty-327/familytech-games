@@ -1,0 +1,37 @@
+{
+  "name": "familytech-games",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^3.6.2",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.0",
+    "@mui/material": "^5.7.0",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "next": "12.1.5",
+    "next-connect": "^0.12.2",
+    "next-pwa": "^5.5.4",
+    "react": "18.1.0",
+    "react-confetti": "^6.1.0",
+    "react-dom": "18.1.0",
+    "react-icons": "^4.4.0",
+    "react-router-dom": "^6.3.0",
+    "react-swipeable": "^7.0.0",
+    "socket.io": "^4.5.2",
+    "socket.io-client": "^4.5.2"
+  },
+  "devDependencies": {
+    "eslint": "8.14.0",
+    "eslint-config-next": "12.1.5",
+    "vitest": "^0.24.3"
+  }
+}
