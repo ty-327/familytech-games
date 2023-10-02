@@ -68,8 +68,8 @@ function Board() {
   // Gets the clue data for each word that is put into the crossword and sets it to the clues variable
   async function fetchData(userFSData, ascendancyNums) {
     //TO TEST LOCALLY, COMMENT OUT THE LOWER URL AND UNCOMMENT THE TOP ONE. THEN WHEN YOU PUSH TO MAIN, MAKE SURE THE TOP URL IS COMMENTED AND THE BOTTOM IS NOT
-    //const url = "http://localhost:3000/api/questiongenerator";
-    const url = "https://games.byufamilytech.org/api/questiongenerator";
+    const url = "http://localhost:3000/api/questiongenerator";
+    //const url = "https://games.byufamilytech.org/api/questiongenerator";
   
     try {
       const res = await axios.post(url, {userFSData, ascendancyNums});

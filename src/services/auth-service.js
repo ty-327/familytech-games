@@ -8,6 +8,8 @@ export default class AuthService {
     let redirectUri = isDev
       ? 'http://localhost:3000/login'
       : `${process.env.DOMAIN}/login`;
+
+    window.open(`${authUrl}/?redirect=${redirectUri}/&site=ag`)
     axios
       .get(`${authUrl}/?redirect=${redirectUri}/&site=ag`)
       .then((res) => {
@@ -32,7 +34,7 @@ export default class AuthService {
         'FS_SSO_JWT_TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
     }
     localStorage.clear();
-  };
+  }
 
   static hasCookie = () => {
     let cookieValue = getCookie('FS_SSO_JWT_TOKEN');
