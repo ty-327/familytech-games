@@ -1,6 +1,6 @@
 # Crossword
 
-## About this Game test
+## About this Game
 
 Crossword is an app that allows users to find family names based off of a hint and enter them in a connected grid structure to completion.
 
