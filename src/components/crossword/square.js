@@ -24,7 +24,7 @@ function Square(props) {
   return (
     <>
       <div className={styles.div}>
-        {clueNumber != 0 ? <p className={styles.number}>{clueNumber}</p> : null}
+        {clueNumber != 0 ? <div className={styles.number}>{clueNumber}</div> : null}
         <input
           ref={(element) =>
             (inputLocation.current[row * dimensions + col] = element)
