@@ -691,7 +691,8 @@ function Board() {
   let clueNumber = -1;
   return !loading ?(
     <>
-      <div>
+    <div className="row">
+      <div className="col">
         {board.map((rows) => {
           return (
             <div className={styles.div} key={rows.id}>
@@ -724,11 +725,14 @@ function Board() {
         })}
         {(START_SQUARES = [])}
       </div>
-      <ClueList
+      <div className="col">
+        <ClueList
         verticalClues={vertClues}
         horizontalClues={horClues}
         result={clues}
       />
+      </div>
+      
       <Modal open={puzzleIsCorrect} onClose={() => setPuzzleIsCorrect(false)}>
         <div className={styles.modal_container}>
           <button
@@ -740,6 +744,8 @@ function Board() {
           <h3>Congrats on solving the Crossword! </h3>
         </div>
       </Modal>
+    </div>
+
     </>
   ): (<div>Loading...</div>);
 }
