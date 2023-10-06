@@ -21,9 +21,11 @@ function ClueList(props) {
   }
 
   //ADDED
-  function handleCheckboxChange(clueNumber) {
-    setCheckedClues(prevState => ({ ...prevState, [clueNumber]: !prevState[clueNumber] }));
+  function handleCheckboxChange(direction, clueNumber) {
+    const uniqueKey = `${direction}_${clueNumber}`;
+    setCheckedClues(prevState => ({ ...prevState, [uniqueKey]: !prevState[uniqueKey] }));
   }
+  
 
   clueList.VERTICAL.sort((a, b) => a.CLUE_NUMBER - b.CLUE_NUMBER);
   clueList.HORIZONTAL.sort((a, b) => a.CLUE_NUMBER - b.CLUE_NUMBER); 
@@ -49,18 +51,20 @@ function ClueList(props) {
       <div>
         <h1>Clues</h1>
         <h2>Down</h2>
+        <p><i>Check the box next to a clue to mark it as 'done!'</i></p>
         {clueList.VERTICAL.map((clues) => {
           return (
             <div key={clues.CLUE_NUMBER} style={{ display: 'flex', alignItems: 'center' }}>
               <input 
                 type="checkbox"
-                onChange={() => handleCheckboxChange(clues.CLUE_NUMBER)}
+                onChange={() => handleCheckboxChange('VERTICAL', clues.CLUE_NUMBER)}
+                style={{ marginRight: '8px' }}  
               />
               <Clue 
                 number={clues.CLUE_NUMBER}
                 word={clues.WORD}
                 clue={clues.CLUE}
-                strikethrough={checkedClues[clues.CLUE_NUMBER]}
+                strikethrough={checkedClues[`VERTICAL_${clues.CLUE_NUMBER}`]}
               />
             </div>
           );
@@ -71,13 +75,14 @@ function ClueList(props) {
             <div key={clues.CLUE_NUMBER} style={{ display: 'flex', alignItems: 'center' }}>
               <input 
                 type="checkbox"
-                onChange={() => handleCheckboxChange(clues.CLUE_NUMBER)}
+                onChange={() => handleCheckboxChange('HORIZONTAL', clues.CLUE_NUMBER)}
+                style={{ marginRight: '8px' }}  
               />
               <Clue 
                 number={clues.CLUE_NUMBER}
                 word={clues.WORD}
                 clue={clues.CLUE}
-                strikethrough={checkedClues[clues.CLUE_NUMBER]}
+                strikethrough={checkedClues[`HORIZONTAL_${clues.CLUE_NUMBER}`]}
               />
             </div>
           );
@@ -86,6 +91,7 @@ function ClueList(props) {
       </div>
     </>
   );
+
 }
 
 export default ClueList;
