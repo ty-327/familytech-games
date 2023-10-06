@@ -671,7 +671,7 @@ function Board() {
     return currentBoard;
   }
 
-  // Loops through the 2D array to check if each key character matches each entered character
+  // Loops through the 2D array to check if each key character matches each entered character***
   function checkIfFinished() {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].CURRENT_ROW.length; j++) {
@@ -748,5 +748,6 @@ function Board() {
 
     </>
   ): (<div>Loading...</div>);
+  //LOOK AT LINE 736***
 }
 export default Board;

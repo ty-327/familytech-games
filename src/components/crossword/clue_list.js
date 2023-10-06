@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 function ClueList(props) {
   let { verticalClues, horizontalClues, result } = props;
   const [clueList, setClueList] = useState({VERTICAL: verticalClues, HORIZONTAL:horizontalClues});
+  const [checkedClues, setCheckedClues] = useState({}); //ADDED
+
   useEffect(() => {
     setClueList(makeClueList());
   }, []);
@@ -17,6 +19,12 @@ function ClueList(props) {
     let clues = {VERTICAL: verticalClues, HORIZONTAL: horizontalClues}
     return clues;
   }
+
+  //ADDED
+  function handleCheckboxChange(clueNumber) {
+    setCheckedClues(prevState => ({ ...prevState, [clueNumber]: !prevState[clueNumber] }));
+  }
+
   clueList.VERTICAL.sort((a, b) => a.CLUE_NUMBER - b.CLUE_NUMBER);
   clueList.HORIZONTAL.sort((a, b) => a.CLUE_NUMBER - b.CLUE_NUMBER); 
 
@@ -34,6 +42,8 @@ function ClueList(props) {
     }
   }
 
+
+  //CHANGES TO THIS AS WELL
   return (
     <>
       <div>
@@ -41,16 +51,34 @@ function ClueList(props) {
         <h2>Down</h2>
         {clueList.VERTICAL.map((clues) => {
           return (
-            <div key={clues.CLUE_NUMBER}>
-              <Clue number={clues.CLUE_NUMBER} word={clues.WORD} clue={clues.CLUE} />
+            <div key={clues.CLUE_NUMBER} style={{ display: 'flex', alignItems: 'center' }}>
+              <input 
+                type="checkbox"
+                onChange={() => handleCheckboxChange(clues.CLUE_NUMBER)}
+              />
+              <Clue 
+                number={clues.CLUE_NUMBER}
+                word={clues.WORD}
+                clue={clues.CLUE}
+                strikethrough={checkedClues[clues.CLUE_NUMBER]}
+              />
             </div>
           );
         })}
         <h2>Across</h2>
         {clueList.HORIZONTAL.map((clues) => {
           return (
-            <div key={clues.CLUE_NUMBER}>
-              <Clue number={clues.CLUE_NUMBER} word={clues.WORD} clue={clues.CLUE} />
+            <div key={clues.CLUE_NUMBER} style={{ display: 'flex', alignItems: 'center' }}>
+              <input 
+                type="checkbox"
+                onChange={() => handleCheckboxChange(clues.CLUE_NUMBER)}
+              />
+              <Clue 
+                number={clues.CLUE_NUMBER}
+                word={clues.WORD}
+                clue={clues.CLUE}
+                strikethrough={checkedClues[clues.CLUE_NUMBER]}
+              />
             </div>
           );
         })}
@@ -59,4 +87,5 @@ function ClueList(props) {
     </>
   );
 }
+
 export default ClueList;

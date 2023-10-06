@@ -38,6 +38,7 @@ function Clue(props) {
       <div 
         onContextMenu={handleContextMenu}
         onClick={displayClue ? null : handleNameClick}
+        style={{ textDecoration: props.strikethrough ? 'line-through' : 'none' }}
       >
         {number + ". " + (displayClue ? clue : word)}
       </div>

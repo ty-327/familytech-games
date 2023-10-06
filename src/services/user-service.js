@@ -37,6 +37,9 @@ export default class UserService {
         newFSData.addPerson(person);
       }
     }
+    // if (!rawFSData || !rawFSData.data) {
+    //   throw new Error('rawFSData or rawFSData.data is undefined.');
+    // }
     newFSData.insertRelationships(rawFSData.data.relationships);
     return newFSData;
   }
