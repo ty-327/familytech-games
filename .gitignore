@@ -8,7 +8,7 @@ src/node_modules
 src/.next
 /.pnp
 .pnp.js
-sw.js.map
+sw.js.map*
 
 # testing
 /coverage
