@@ -49,6 +49,54 @@ function ClueList(props) {
     }
   }
 
+  let duplicateIndexes = [];
+
+  for (let clue1 = 0; clue1 < clueList.HORIZONTAL.length; clue1++) {
+    for (let clue2 = clue1 + 1; clue2 < clueList.HORIZONTAL.length; clue2++) {
+      if (clueList.HORIZONTAL[clue1].CLUE == clueList.HORIZONTAL[clue2].CLUE && clue1 != clue2) {
+        duplicateIndexes.push([clue1, clue2]);
+      }
+    }
+  }
+
+  if (duplicateIndexes) {
+    for (let i = duplicateIndexes.length - 1; i >= 0; i--) {
+      clueList.HORIZONTAL.splice(duplicateIndexes[i][1], 1);
+    }
+  }
+
+  duplicateIndexes = [];
+
+  for (let clue1 = 0; clue1 < clueList.VERTICAL.length; clue1++) {
+    for (let clue2 = clue1 + 1; clue2 < clueList.VERTICAL.length; clue2++) {
+      if (clueList.VERTICAL[clue1].CLUE == clueList.VERTICAL[clue2].CLUE && clue1 != clue2) {
+        duplicateIndexes.push([clue1, clue2]);
+      }
+    }
+  }
+
+  if (duplicateIndexes) {
+    for (let i = duplicateIndexes.length - 1; i >= 0; i--) {
+      clueList.VERTICAL.splice(duplicateIndexes[i][1], 1);
+    }
+  }
+
+  duplicateIndexes = [];
+
+  for (let clue1 = 0; clue1 < clueList.HORIZONTAL.length; clue1++) {
+    for (let clue2 = clue1 + 1; clue2 < clueList.VERTICAL.length; clue2++) {
+      if (clueList.HORIZONTAL[clue1].CLUE == clueList.VERTICAL[clue2].CLUE && clue1 != clue2) {
+        duplicateIndexes.push([clue1, clue2]);
+      }
+    }
+  }
+
+  if (duplicateIndexes) {
+    for (let i = duplicateIndexes.length - 1; i >= 0; i--) {
+      clueList.VERTICAL.splice(duplicateIndexes[i][1], 1);
+    }
+  }
+
   return (
     <>
       <div>
