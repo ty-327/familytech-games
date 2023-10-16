@@ -32,7 +32,22 @@ function ClueList(props) {
     setCheckedClues((prevState) => ({ ...prevState, [uniqueKey]: !prevState[uniqueKey] }));
   }
 
-  // Remove duplicateIndexes and its processing, as it's repeated code
+  clueList.VERTICAL.sort((a, b) => a.CLUE_NUMBER - b.CLUE_NUMBER);
+  clueList.HORIZONTAL.sort((a, b) => a.CLUE_NUMBER - b.CLUE_NUMBER);
+
+  for (let i = 0; i < clueList.VERTICAL.length; i++) {
+    let hint = result.find((item) => item.answer === clueList.VERTICAL[i].WORD);
+    if (hint != null) {
+      clueList.VERTICAL[i].CLUE = hint.clue;
+    }
+  }
+
+  for (let i = 0; i < clueList.HORIZONTAL.length; i++) {
+    let hint = result.find((item) => item.answer === clueList.HORIZONTAL[i].WORD);
+    if (hint != null) {
+      clueList.HORIZONTAL[i].CLUE = hint.clue;
+    }
+  }
 
   return (
     <>
