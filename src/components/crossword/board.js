@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import ClueList from "./clue_list";
 import { Modal } from "@mui/material";
 import { useUser } from "@/contexts/UserContext";
-import axios from "axios";
+import axios from 'axios'
 
 let START_SQUARES = [];
 
@@ -20,7 +20,7 @@ function Board() {
   const { userFSData } = useUser();
   let ANCESTORS = [];
   let ascendencyNums = [];
-
+  
   //Creates an array of all names that could be added to the crossword
   for (const [key, value] of userFSData) {
     let currentAncestorName = value.name.compressedName;
@@ -48,7 +48,16 @@ function Board() {
   }, [clues]);
 
   useEffect(() => {
-    setBoard(setUpBoard(BOARD, SORTED_CLUE_LIST, START_SQUARES, ADDED_WORDS, REMAINING_WORDS, NOT_ADDED));
+    setBoard(
+      setUpBoard(
+        BOARD,
+        SORTED_CLUE_LIST,
+        START_SQUARES,
+        ADDED_WORDS,
+        REMAINING_WORDS,
+        NOT_ADDED
+      )
+    );
   }, []);
 
   // Handles what happens when the user solves the crossword
@@ -61,22 +70,22 @@ function Board() {
     //TO TEST LOCALLY, COMMENT OUT THE LOWER URL AND UNCOMMENT THE TOP ONE. THEN WHEN YOU PUSH TO MAIN, MAKE SURE THE TOP URL IS COMMENTED AND THE BOTTOM IS NOT
     const url = "http://localhost:3000/api/questiongenerator";
     //const url = "https://games.byufamilytech.org/api/questiongenerator";
-
+  
     try {
-      const res = await axios.post(url, { userFSData, ascendancyNums });
+      const res = await axios.post(url, {userFSData, ascendancyNums});
       setClues(res.data);
     } catch (error) {
       console.log(error);
     }
   }
-
+  
   useEffect(() => {
     if (userFSData) {
       console.log("data in if statement " + Array.from(userFSData.values()).length);
       const fsDataObj = Object.fromEntries(userFSData);
       fetchData(fsDataObj, justAscendencyNums);
     }
-  }, []);
+  }, [])
 
   // Handles what happens when a letter is changed on the board
   function handleSquareInput(letter, row, col, inputLocation) {
@@ -96,16 +105,24 @@ function Board() {
       } else {
         inputLocation.current[row * DIMENSIONS + col + 1].focus();
       }
-    } else if (inputLocation.current[row * DIMENSIONS + col - DIMENSIONS].value != "") {
-      if (inputLocation.current[row * DIMENSIONS + col + DIMENSIONS].value != "") {
+    } else if (
+      inputLocation.current[row * DIMENSIONS + col - DIMENSIONS].value != ""
+    ) {
+      if (
+        inputLocation.current[row * DIMENSIONS + col + DIMENSIONS].value != ""
+      ) {
         inputLocation.current[row * DIMENSIONS + col + DIMENSIONS * 2].focus();
       } else {
         inputLocation.current[row * DIMENSIONS + col + DIMENSIONS].focus();
       }
     } else {
-      if (inputLocation.current[row * DIMENSIONS + col + DIMENSIONS].value != "") {
+      if (
+        inputLocation.current[row * DIMENSIONS + col + DIMENSIONS].value != ""
+      ) {
         inputLocation.current[row * DIMENSIONS + col + DIMENSIONS * 2].focus();
-      } else if (inputLocation.current[row * DIMENSIONS + col + 1].value != "") {
+      } else if (
+        inputLocation.current[row * DIMENSIONS + col + 1].value != ""
+      ) {
         inputLocation.current[row * DIMENSIONS + col + 2].focus();
       } else {
         inputLocation.current[row * DIMENSIONS + col + DIMENSIONS].focus();
@@ -120,13 +137,13 @@ function Board() {
       let movedLocation = inputLocation.current[row * DIMENSIONS + col - 1].focus();
       if (movedLocation != null) {
         movedLocation.focus();
-        movedLocation.setSelectionRange(1, 1);
+        movedLocation.setSelectionRange(1,1);
       }
     } else if (event.keyCode === 38) {
       let movedLocation = inputLocation.current[row * DIMENSIONS + col - DIMENSIONS];
       if (movedLocation != null) {
         movedLocation.focus();
-        movedLocation.setSelectionRange(1, 1);
+        movedLocation.setSelectionRange(1,1);
       }
     } else if (event.keyCode === 39) {
       inputLocation.current[row * DIMENSIONS + col + 1].focus();
@@ -136,13 +153,26 @@ function Board() {
   }
 
   // Inserts all of the other words into the board except the first word
-  function insertAllWords(board, remainingWords, addedWords, START_SQUARES, NOT_ADDED) {
+  function insertAllWords(
+    board,
+    remainingWords,
+    addedWords,
+    START_SQUARES,
+    NOT_ADDED
+  ) {
     let finished = false;
     let attemptedInsertions = 0;
     while (!finished) {
       for (let i = 0; i < remainingWords.length; i++) {
         attemptedInsertions++;
-        let wordInserted = checkAndInsertWord(remainingWords[i].ANSWER, board, remainingWords, addedWords, START_SQUARES, remainingWords[i].ASCENDENCY_NUM);
+        let wordInserted = checkAndInsertWord(
+          remainingWords[i].ANSWER,
+          board,
+          remainingWords,
+          addedWords,
+          START_SQUARES,
+          remainingWords[i].ASCENDENCY_NUM
+        );
         if (wordInserted == true) {
           break;
         }
@@ -178,13 +208,31 @@ function Board() {
   }
 
   // Checks that a word can be inserted in a certain spot on the board and if it is possible to insert it, it inserts it
-  function checkAndInsertWord(wordToAdd, board, remainingWords, addedWords, START_SQUARES, aNum) {
+  function checkAndInsertWord(
+    wordToAdd,
+    board,
+    remainingWords,
+    addedWords,
+    START_SQUARES,
+    aNum
+  ) {
     let wordInserted = false;
     let foundCollisions = checkForCollisions(wordToAdd, board);
     for (let i = 0; i < foundCollisions.length; i++) {
-      let insertCheck = checkIfWordCanBeInserted(wordToAdd, foundCollisions[i], board);
+      let insertCheck = checkIfWordCanBeInserted(
+        wordToAdd,
+        foundCollisions[i],
+        board
+      );
       if (insertCheck.INSERT == true) {
-        board = insertWord(wordToAdd, board, foundCollisions[i], insertCheck.DIRECTION, START_SQUARES, aNum);
+        board = insertWord(
+          wordToAdd,
+          board,
+          foundCollisions[i],
+          insertCheck.DIRECTION,
+          START_SQUARES,
+          aNum
+        );
         addedWords.push(wordToAdd);
         let wordIndex = remainingWords.findIndex((object) => {
           return object.ANSWER === wordToAdd;
@@ -224,9 +272,35 @@ function Board() {
       }
     }
     //Check to see if it can be inserted horizontally
-    if (currentBoard[collision.row].CURRENT_ROW[collision.col + 1].KEY_CHARACTER === "*" && currentBoard[collision.row].CURRENT_ROW[collision.col - 1].KEY_CHARACTER === "*" && currentBoard[collision.row + 1].CURRENT_ROW[collision.col + 1].KEY_CHARACTER === "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col + 1].KEY_CHARACTER === "*" && currentBoard[collision.row + 1].CURRENT_ROW[collision.col - 1].KEY_CHARACTER === "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col - 1].KEY_CHARACTER === "*") {
+    if (
+      currentBoard[collision.row].CURRENT_ROW[collision.col + 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row].CURRENT_ROW[collision.col - 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row + 1].CURRENT_ROW[collision.col + 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row - 1].CURRENT_ROW[collision.col + 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row + 1].CURRENT_ROW[collision.col - 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row - 1].CURRENT_ROW[collision.col - 1]
+        .KEY_CHARACTER === "*"
+    ) {
       for (let i = 1; i <= firstPart.length; i++) {
-        if ((currentBoard[collision.row].CURRENT_ROW[collision.col - i].KEY_CHARACTER === "*" || currentBoard[collision.row].CURRENT_ROW[collision.col - i].KEY_CHARACTER === firstPart[i - 1]) && currentBoard[collision.row].CURRENT_ROW[collision.col - i].AVAILABLE == true && currentBoard[collision.row + 1].CURRENT_ROW[collision.col - i].KEY_CHARACTER == "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col - i].KEY_CHARACTER == "*" && currentBoard[collision.row].CURRENT_ROW[collision.col - i - 1].AVAILABLE == true) {
+        if (
+          (currentBoard[collision.row].CURRENT_ROW[collision.col - i]
+            .KEY_CHARACTER === "*" ||
+            currentBoard[collision.row].CURRENT_ROW[collision.col - i]
+              .KEY_CHARACTER === firstPart[i - 1]) &&
+          currentBoard[collision.row].CURRENT_ROW[collision.col - i]
+            .AVAILABLE == true &&
+          currentBoard[collision.row + 1].CURRENT_ROW[collision.col - i]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row - 1].CURRENT_ROW[collision.col - i]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row].CURRENT_ROW[collision.col - i - 1]
+            .AVAILABLE == true
+        ) {
           canInsert = true;
         } else {
           canInsert = false;
@@ -234,7 +308,20 @@ function Board() {
         }
       }
       for (let i = 1; i <= secondPart.length; i++) {
-        if ((currentBoard[collision.row].CURRENT_ROW[collision.col + i].KEY_CHARACTER === "*" || currentBoard[collision.row].CURRENT_ROW[collision.col + i].KEY_CHARACTER === secondPart[i - 1]) && currentBoard[collision.row].CURRENT_ROW[collision.col + i].AVAILABLE == true && currentBoard[collision.row + 1].CURRENT_ROW[collision.col + i].KEY_CHARACTER == "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col + i].KEY_CHARACTER == "*" && currentBoard[collision.row].CURRENT_ROW[collision.col + i + 1].AVAILABLE == true) {
+        if (
+          (currentBoard[collision.row].CURRENT_ROW[collision.col + i]
+            .KEY_CHARACTER === "*" ||
+            currentBoard[collision.row].CURRENT_ROW[collision.col + i]
+              .KEY_CHARACTER === secondPart[i - 1]) &&
+          currentBoard[collision.row].CURRENT_ROW[collision.col + i]
+            .AVAILABLE == true &&
+          currentBoard[collision.row + 1].CURRENT_ROW[collision.col + i]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row - 1].CURRENT_ROW[collision.col + i]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row].CURRENT_ROW[collision.col + i + 1]
+            .AVAILABLE == true
+        ) {
           canInsert = true;
         } else {
           canInsert = false;
@@ -242,10 +329,36 @@ function Board() {
         }
       }
     }
-    if (currentBoard[collision.row + 1].CURRENT_ROW[collision.col].KEY_CHARACTER === "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col].KEY_CHARACTER === "*" && currentBoard[collision.row + 1].CURRENT_ROW[collision.col + 1].KEY_CHARACTER === "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col + 1].KEY_CHARACTER === "*" && currentBoard[collision.row + 1].CURRENT_ROW[collision.col - 1].KEY_CHARACTER === "*" && currentBoard[collision.row - 1].CURRENT_ROW[collision.col - 1].KEY_CHARACTER === "*") {
+    if (
+      currentBoard[collision.row + 1].CURRENT_ROW[collision.col]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row - 1].CURRENT_ROW[collision.col]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row + 1].CURRENT_ROW[collision.col + 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row - 1].CURRENT_ROW[collision.col + 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row + 1].CURRENT_ROW[collision.col - 1]
+        .KEY_CHARACTER === "*" &&
+      currentBoard[collision.row - 1].CURRENT_ROW[collision.col - 1]
+        .KEY_CHARACTER === "*"
+    ) {
       direction = "vertical";
       for (let i = 1; i <= firstPart.length; i++) {
-        if ((currentBoard[collision.row - i].CURRENT_ROW[collision.col].KEY_CHARACTER === "*" || currentBoard[collision.row - i].CURRENT_ROW[collision.col].KEY_CHARACTER === firstPart[i - 1]) && currentBoard[collision.row - i].CURRENT_ROW[collision.col].AVAILABLE == true && currentBoard[collision.row - i].CURRENT_ROW[collision.col + 1].KEY_CHARACTER == "*" && currentBoard[collision.row - i].CURRENT_ROW[collision.col - 1].KEY_CHARACTER == "*" && currentBoard[collision.row - i - 1].CURRENT_ROW[collision.col].AVAILABLE == true) {
+        if (
+          (currentBoard[collision.row - i].CURRENT_ROW[collision.col]
+            .KEY_CHARACTER === "*" ||
+            currentBoard[collision.row - i].CURRENT_ROW[collision.col]
+              .KEY_CHARACTER === firstPart[i - 1]) &&
+          currentBoard[collision.row - i].CURRENT_ROW[collision.col]
+            .AVAILABLE == true &&
+          currentBoard[collision.row - i].CURRENT_ROW[collision.col + 1]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row - i].CURRENT_ROW[collision.col - 1]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row - i - 1].CURRENT_ROW[collision.col]
+            .AVAILABLE == true
+        ) {
           canInsert = true;
         } else {
           canInsert = false;
@@ -253,7 +366,20 @@ function Board() {
         }
       }
       for (let i = 1; i <= secondPart.length; i++) {
-        if ((currentBoard[collision.row + i].CURRENT_ROW[collision.col].KEY_CHARACTER === "*" || currentBoard[collision.row + i].CURRENT_ROW[collision.col].KEY_CHARACTER === secondPart[i - 1]) && currentBoard[collision.row + i].CURRENT_ROW[collision.col].AVAILABLE == true && currentBoard[collision.row + i].CURRENT_ROW[collision.col + 1].KEY_CHARACTER == "*" && currentBoard[collision.row + i].CURRENT_ROW[collision.col - 1].KEY_CHARACTER == "*" && currentBoard[collision.row + i + 1].CURRENT_ROW[collision.col].AVAILABLE == true) {
+        if (
+          (currentBoard[collision.row + i].CURRENT_ROW[collision.col]
+            .KEY_CHARACTER === "*" ||
+            currentBoard[collision.row + i].CURRENT_ROW[collision.col]
+              .KEY_CHARACTER === secondPart[i - 1]) &&
+          currentBoard[collision.row + i].CURRENT_ROW[collision.col]
+            .AVAILABLE == true &&
+          currentBoard[collision.row + i].CURRENT_ROW[collision.col + 1]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row + i].CURRENT_ROW[collision.col - 1]
+            .KEY_CHARACTER == "*" &&
+          currentBoard[collision.row + i + 1].CURRENT_ROW[collision.col]
+            .AVAILABLE == true
+        ) {
           canInsert = true;
         } else {
           canInsert = false;
@@ -264,7 +390,14 @@ function Board() {
     return { INSERT: canInsert, DIRECTION: direction };
   }
   // Inserts an individual word. It splits the word apart based on where it is going to go on the board, and updates the key characters of the new squares to the word's characters. It also updates the availability of the squares surrounding the newly placed word
-  function insertWord(wordToAdd, currentBoard, collision, direction, START_SQUARES, aNum) {
+  function insertWord(
+    wordToAdd,
+    currentBoard,
+    collision,
+    direction,
+    START_SQUARES,
+    aNum
+  ) {
     let charIndex = wordToAdd.indexOf(collision.character);
     let splitWord = wordToAdd.split(collision.character);
     let firstPart = "";
@@ -295,23 +428,42 @@ function Board() {
         START_SQUARES.push({ ROW: firstRow, COL: firstCol });
       }
       for (let i = 1; i <= firstPart.length; i++) {
-        currentBoard[collision.row].CURRENT_ROW[collision.col - i].KEY_CHARACTER = firstPart[i - 1];
-        currentBoard[collision.row].CURRENT_ROW[collision.col - i].AVAILABLE = false;
+        currentBoard[collision.row].CURRENT_ROW[
+          collision.col - i
+        ].KEY_CHARACTER = firstPart[i - 1];
+        currentBoard[collision.row].CURRENT_ROW[
+          collision.col - i
+        ].AVAILABLE = false;
         if (i == firstPart.length) {
           firstRow = collision.row;
           firstCol = collision.col - i;
           START_SQUARES.push({ ROW: firstRow, COL: firstCol });
         }
       }
-      currentBoard[collision.row].CURRENT_ROW[collision.col - firstPart.length - 1].AVAILABLE = false;
+      currentBoard[collision.row].CURRENT_ROW[
+        collision.col - firstPart.length - 1
+      ].AVAILABLE = false;
       for (let i = 0; i <= secondPart.length; i++) {
-        currentBoard[collision.row].CURRENT_ROW[collision.col + i].KEY_CHARACTER = secondPart[i - 1];
-        currentBoard[collision.row].CURRENT_ROW[collision.col + i].AVAILABLE = false;
+        currentBoard[collision.row].CURRENT_ROW[
+          collision.col + i
+        ].KEY_CHARACTER = secondPart[i - 1];
+        currentBoard[collision.row].CURRENT_ROW[
+          collision.col + i
+        ].AVAILABLE = false;
       }
-      currentBoard[collision.row].CURRENT_ROW[collision.col + secondPart.length + 1].AVAILABLE = false;
+      currentBoard[collision.row].CURRENT_ROW[
+        collision.col + secondPart.length + 1
+      ].AVAILABLE = false;
       HORIZONTAL_WORDS.push({
         WORD: wordToAdd,
-        CLUE_NUMBER: START_SQUARES.indexOf(START_SQUARES.filter((e) => e.ROW == collision.row && e.COL == collision.col - firstPart.length)[0]) + 1,
+        CLUE_NUMBER:
+          START_SQUARES.indexOf(
+            START_SQUARES.filter(
+              (e) =>
+                e.ROW == collision.row &&
+                e.COL == collision.col - firstPart.length
+            )[0]
+          ) + 1,
       });
     }
     if (direction == "vertical") {
@@ -323,27 +475,47 @@ function Board() {
         START_SQUARES.push({ ROW: firstRow, COL: firstCol });
       }
       for (let i = 1; i <= firstPart.length; i++) {
-        currentBoard[collision.row - i].CURRENT_ROW[collision.col].KEY_CHARACTER = firstPart[i - 1];
-        currentBoard[collision.row - i].CURRENT_ROW[collision.col].AVAILABLE = false;
+        currentBoard[collision.row - i].CURRENT_ROW[
+          collision.col
+        ].KEY_CHARACTER = firstPart[i - 1];
+        currentBoard[collision.row - i].CURRENT_ROW[
+          collision.col
+        ].AVAILABLE = false;
         if (i == firstPart.length) {
           firstRow = collision.row - i;
           firstCol = collision.col;
           START_SQUARES.push({ ROW: firstRow, COL: firstCol });
         }
       }
-      currentBoard[collision.row - firstPart.length - 1].CURRENT_ROW[collision.col].AVAILABLE = false;
+      currentBoard[collision.row - firstPart.length - 1].CURRENT_ROW[
+        collision.col
+      ].AVAILABLE = false;
       for (let i = 0; i <= secondPart.length; i++) {
-        currentBoard[collision.row + i].CURRENT_ROW[collision.col].KEY_CHARACTER = secondPart[i - 1];
-        currentBoard[collision.row + i].CURRENT_ROW[collision.col].AVAILABLE = false;
+        currentBoard[collision.row + i].CURRENT_ROW[
+          collision.col
+        ].KEY_CHARACTER = secondPart[i - 1];
+        currentBoard[collision.row + i].CURRENT_ROW[
+          collision.col
+        ].AVAILABLE = false;
       }
-      currentBoard[collision.row + secondPart.length + 1].CURRENT_ROW[collision.col].AVAILABLE = false;
+      currentBoard[collision.row + secondPart.length + 1].CURRENT_ROW[
+        collision.col
+      ].AVAILABLE = false;
       VERTICAL_WORDS.push({
         WORD: wordToAdd,
-        CLUE_NUMBER: START_SQUARES.indexOf(START_SQUARES.filter((e) => e.ROW == collision.row - firstPart.length && e.COL == collision.col)[0]) + 1,
+        CLUE_NUMBER:
+          START_SQUARES.indexOf(
+            START_SQUARES.filter(
+              (e) =>
+                e.ROW == collision.row - firstPart.length &&
+                e.COL == collision.col
+            )[0]
+          ) + 1,
       });
-      setVertClues(VERTICAL_WORDS);
+      setVertClues(VERTICAL_WORDS)
     }
-    currentBoard[collision.row].CURRENT_ROW[collision.col].KEY_CHARACTER = collision.character;
+    currentBoard[collision.row].CURRENT_ROW[collision.col].KEY_CHARACTER =
+      collision.character;
     return currentBoard;
   }
   // Sorts the key words from longest word to shortest word
@@ -373,28 +545,56 @@ function Board() {
     while (currentIndex != 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
-      [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
     }
     return array;
   }
   // Sets up the board before the user can see it
-  function setUpBoard(BOARD, SORTED_CLUE_LIST, START_SQUARES, ADDED_WORDS, REMAINING_WORDS, NOT_ADDED) {
+  function setUpBoard(
+    BOARD,
+    SORTED_CLUE_LIST,
+    START_SQUARES,
+    ADDED_WORDS,
+    REMAINING_WORDS,
+    NOT_ADDED
+  ) {
     for (let currentRow = 0; currentRow < DIMENSIONS; currentRow++) {
       let CURRENT_ROW = [];
       for (let currentCol = 0; currentCol < DIMENSIONS; currentCol++) {
         CURRENT_ROW.push({
           ROW: currentRow,
           COL: currentCol,
-          KEY_CHARACTER: currentRow == 0 || currentRow == DIMENSIONS - 1 || currentCol == 0 || currentCol == DIMENSIONS - 1 ? "&" : "*",
-          CHARACTER: currentRow == 0 || currentRow == DIMENSIONS - 1 || currentCol == 0 || currentCol == DIMENSIONS - 1 ? "&" : "*",
+          KEY_CHARACTER:
+            currentRow == 0 ||
+            currentRow == DIMENSIONS - 1 ||
+            currentCol == 0 ||
+            currentCol == DIMENSIONS - 1
+              ? "&"
+              : "*",
+          CHARACTER:
+            currentRow == 0 ||
+            currentRow == DIMENSIONS - 1 ||
+            currentCol == 0 ||
+            currentCol == DIMENSIONS - 1
+              ? "&"
+              : "*",
           id: currentRow + "x" + currentCol,
-          AVAILABLE: currentRow == 0 || currentRow == DIMENSIONS - 1 || currentCol == 0 || currentCol == DIMENSIONS - 1 ? false : true,
+          AVAILABLE:
+            currentRow == 0 ||
+            currentRow == DIMENSIONS - 1 ||
+            currentCol == 0 ||
+            currentCol == DIMENSIONS - 1
+              ? false
+              : true,
         });
       }
       BOARD.push({ CURRENT_ROW, id: currentRow });
     }
 
-    const randomAncestor = SORTED_CLUE_LIST[Math.floor(Math.random() * SORTED_CLUE_LIST.length)];
+    const randomAncestor = SORTED_CLUE_LIST[Math.floor(Math.random() * SORTED_CLUE_LIST.length)]
 
     BOARD = insertFirstWord(
       9,
@@ -408,16 +608,31 @@ function Board() {
       SORTED_CLUE_LIST[0].ASCENDENCY_NUM
     );
     shuffle(REMAINING_WORDS);
-    insertAllWords(BOARD, REMAINING_WORDS, ADDED_WORDS, START_SQUARES, NOT_ADDED);
+    insertAllWords(
+      BOARD,
+      REMAINING_WORDS,
+      ADDED_WORDS,
+      START_SQUARES,
+      NOT_ADDED
+    );
 
     for (let i = 0; i < ascendencyNums.length; i++) {
       justAscendencyNums[i] = ascendencyNums[i].ASCENDENCY_NUMBER;
     }
-
+    
     return BOARD;
   }
   // Inserts the first word at a set position in the board
-  function insertFirstWord(rowIndex, colIndex, word, currentBoard, START_SQUARES, ADDED_WORDS, REMAINING_WORDS, aNum) {
+  function insertFirstWord(
+    rowIndex,
+    colIndex,
+    word,
+    currentBoard,
+    START_SQUARES,
+    ADDED_WORDS,
+    REMAINING_WORDS,
+    aNum
+  ) {
     let canInsertWord = false;
     let wordIndex = 0;
     if (word.length < DIMENSIONS - 5) {
@@ -434,16 +649,22 @@ function Board() {
     if (canInsertWord) {
       let splitWord = word.split("");
       for (let i = 0; i < splitWord.length; i++) {
-        currentBoard[rowIndex].CURRENT_ROW[colIndex + i].KEY_CHARACTER = splitWord[i];
+        currentBoard[rowIndex].CURRENT_ROW[colIndex + i].KEY_CHARACTER =
+          splitWord[i];
         currentBoard[rowIndex].CURRENT_ROW[colIndex + i].AVAILABLE = false;
       }
       START_SQUARES.push({ ROW: rowIndex, COL: colIndex });
       ADDED_WORDS.push(word);
       HORIZONTAL_WORDS.push({
         WORD: word,
-        CLUE_NUMBER: START_SQUARES.indexOf(START_SQUARES.filter((e) => e.ROW == rowIndex && e.COL == colIndex)[0]) + 1,
+        CLUE_NUMBER:
+          START_SQUARES.indexOf(
+            START_SQUARES.filter(
+              (e) => e.ROW == rowIndex && e.COL == colIndex
+            )[0]
+          ) + 1,
       });
-      setHorClues(HORIZONTAL_WORDS);
+      setHorClues(HORIZONTAL_WORDS)
       REMAINING_WORDS.splice(wordIndex, 1);
       ascendencyNums.push({ ASCENDENCY_NUMBER: aNum, NAME: word });
     }
@@ -454,7 +675,10 @@ function Board() {
   function checkIfFinished() {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[i].CURRENT_ROW.length; j++) {
-        if (board[i].CURRENT_ROW[j].CHARACTER.toLowerCase() != board[i].CURRENT_ROW[j].KEY_CHARACTER.toLowerCase()) {
+        if (
+          board[i].CURRENT_ROW[j].CHARACTER.toLowerCase() !=
+          board[i].CURRENT_ROW[j].KEY_CHARACTER.toLowerCase()
+        ) {
           finished = false;
           return finished;
         }
@@ -465,43 +689,65 @@ function Board() {
   }
 
   let clueNumber = -1;
-  return !loading ? (
+  return !loading ?(
     <>
-      <div className="">
-        <div className="row">
-          <div className="col">
-            {board.map((rows) => {
-              return (
-                <div className={styles.div} key={rows.id}>
-                  {rows.CURRENT_ROW.map((rowItems) => {
-                    {
-                      clueNumber = START_SQUARES.indexOf(START_SQUARES.filter((e) => e.ROW == rowItems.ROW && e.COL == rowItems.COL)[0]) + 1;
-                    }
-                    return <Square row={rowItems.ROW} col={rowItems.COL} character={rowItems.CHARACTER} key_character={rowItems.KEY_CHARACTER} key={rowItems.id} clueNumber={clueNumber} handleSquareInput={handleSquareInput} handleKeyDown={handleKeyDown} dimensions={DIMENSIONS} inputLocation={inputLocation} />;
-                  })}
-                </div>
-              );
-            })}
-            {(START_SQUARES = [])}
-          </div>
-          <div className="col-md-4">
-            <ClueList verticalClues={vertClues} horizontalClues={horClues} result={clues} />
-          </div>
-
-          <Modal open={puzzleIsCorrect} onClose={() => setPuzzleIsCorrect(false)}>
-            <div className={styles.modal_container}>
-              <button className={styles.close_btn} onClick={() => setPuzzleIsCorrect(false)}>
-                X
-              </button>
-              <h3>Congrats on solving the Crossword! </h3>
+    <div className="row">
+      <div className="col">
+        {board.map((rows) => {
+          return (
+            <div className={styles.div} key={rows.id}>
+              {rows.CURRENT_ROW.map((rowItems) => {
+                {
+                  clueNumber =
+                    START_SQUARES.indexOf(
+                      START_SQUARES.filter(
+                        (e) => e.ROW == rowItems.ROW && e.COL == rowItems.COL
+                      )[0]
+                    ) + 1;
+                }
+                return (
+                  <Square
+                    row={rowItems.ROW}
+                    col={rowItems.COL}
+                    character={rowItems.CHARACTER}
+                    key_character={rowItems.KEY_CHARACTER}
+                    key={rowItems.id}
+                    clueNumber={clueNumber}
+                    handleSquareInput={handleSquareInput}
+                    handleKeyDown={handleKeyDown}
+                    dimensions={DIMENSIONS}
+                    inputLocation={inputLocation}
+                  />
+                );
+              })}
             </div>
-          </Modal>
-        </div>
+          );
+        })}
+        {(START_SQUARES = [])}
       </div>
+      <div className="col">
+        <ClueList
+        verticalClues={vertClues}
+        horizontalClues={horClues}
+        result={clues}
+      />
+      </div>
+      
+      <Modal open={puzzleIsCorrect} onClose={() => setPuzzleIsCorrect(false)}>
+        <div className={styles.modal_container}>
+          <button
+            className={styles.close_btn}
+            onClick={() => setPuzzleIsCorrect(false)}
+          >
+            X
+          </button>
+          <h3>Congrats on solving the Crossword! </h3>
+        </div>
+      </Modal>
+    </div>
+
     </>
-  ) : (
-    <div>Loading...</div>
-  );
+  ): (<div>Loading...</div>);
   //LOOK AT LINE 736***
 }
 export default Board;
